@@ -1,0 +1,44 @@
+# config.example.yaml
+# GitHub Actions 供应链分析工具配置文件
+
+github:
+  # token: "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"
+  token: "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"
+  rate_limit_wait: 60  # API 限流等待时间(秒)
+  max_retries: 3
+  timeout: 30
+
+crawler:
+  top_repos_count: 1000
+  max_workers: 3
+  min_stars: 1000  # 最小星数过滤
+  # languages: ["Python", "JavaScript", "Java", "Go", "TypeScript"]
+  languages: []
+  action_dependency:
+    max_depth: 3
+    top_k_actions: 200
+    include_composite_actions: true
+    include_docker_actions: true
+    skip_verified_actions: false
+
+paths:
+  raw_data: "data/raw"
+  processed_data: "data/processed"
+  graphs: "data/graphs"
+  logs: "logs"
+
+analysis:
+  security:
+    sensitive_patterns: ["SECRET_", "TOKEN_", "PASSWORD_", "API_KEY", "AWS_"]
+    high_risk_actions: ["actions/checkout", "docker/login", "azure/login"]
+  visualization:
+    max_nodes_display: 500
+    color_scheme: "viridis"
+
+# 高级配置
+advanced:
+  enable_debug: false
+  save_intermediate_results: true
+  parallel_processing: true
+  cache_enabled: true
+  cache_ttl: 3600  # 缓存时间(秒)
