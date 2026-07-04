@@ -1,0 +1,2 @@
+"""GHA-Cascade-Analyzer package."""
+

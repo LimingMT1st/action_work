@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gha-cascade-analyzer"
+version = "0.1.0"
+description = "Consumer-first GitHub Actions cascade risk data collection pipeline"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "aiohttp>=3.9.0",
+  "matplotlib>=3.8.0",
+  "pydantic>=2.7.0",
+  "python-dotenv>=1.0.1",
+  "PyYAML>=6.0.1",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

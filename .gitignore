@@ -1,0 +1,17 @@
+.env
+.venv/
+.venv_py310_backup/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.DS_Store
+logs/
+data/
+.codex_backups/
+src/*.egg-info/
+src/**/*.egg-info/

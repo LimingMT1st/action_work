@@ -1,49 +1,153 @@
-# GitHub Actions 供应链分析工具
+# GHA Cascade Analyzer
 
-一个全面的工具，用于分析 GitHub Actions 的依赖关系和供应链安全风险。
+GHA Cascade Analyzer is a research-oriented toolkit for collecting and analyzing GitHub Actions workflow ecosystems from a supply-chain security perspective.
 
-## 功能特性
+It focuses on how trust propagates through reusable Actions and workflows, how mutable references drift over time, and how upstream changes can affect downstream repositories at scale.
 
-### 数据收集
-- 爬取 GitHub 热门仓库（按星数排名）
-- 提取仓库中的 workflows 和 Actions
-- 分析 Action 之间的嵌套依赖关系
+## What This Repository Contains
 
-### 依赖分析
-- 构建仓库-Action 依赖图
-- 构建 Action-Action 依赖图
-- 检测循环依赖和关键路径
-- 分析依赖复杂度和维护性
+- `src/gha_cascade_analyzer/`: the main collection and analysis package
+- `scripts/`: figure-generation and experiment helper scripts
+- `tests/`: regression tests for the research metrics and analysis modules
+- `docs/`: draft writing materials and section-level paper assets
+- `.env.example`: example runtime configuration
 
-### 安全分析
-- 检测未固定版本的 Actions
-- 识别过宽的权限设置
-- 发现硬编码的秘密
-- 分析供应链攻击风险
+This public repository intentionally excludes local runtime state such as collected datasets, checkpoints, logs, virtual environments, and private tokens.
 
-### 可视化
-- 交互式依赖关系图
-- 时间序列趋势分析
-- 安全风险仪表板
-- 供应链漏洞热图
+## Main Capabilities
 
-### 报告生成
-- 供应链风险报告
-- 安全建议和最佳实践
-- 合规框架
-- 执行摘要
+- Sample GitHub repositories that consume GitHub Actions workflows
+- Collect workflow files, workflow history, and Marketplace metadata
+- Track mutable references and reconstruct tag drift events over repeated runs
+- Build cascade dependency graphs for downstream trust analysis
+- Export structured CSV and JSON outputs for research reporting
+- Generate paper-ready figures for multiple research questions
 
-## 快速开始
+## Research Focus
 
-### 1. 安装依赖
+The current codebase supports analyses around:
+
+- Implicit dependency discovery in GitHub Actions workflows
+- Mutable-reference drift and trust instability
+- Privilege-bearing blast radius of reused Actions
+- Exposure windows between upstream drift and downstream updates
+- Cross-owner and layered trust amplification patterns
+
+## Requirements
+
+- Python `3.11+`
+- `git` available in `PATH`
+- One or more GitHub Personal Access Tokens for data collection
+
+## Quick Start
+
+### 1. Clone the repository
+
 ```bash
-pip install -r requirements.txt
+git clone https://github.com/LimingMT1st/action_work.git
+cd action_work
+```
 
-##################
-使用方法:
-python clear_data.py --all              # 清理所有数据
-python clear_data.py --crawled          # 仅清理爬取的数据
-python clear_data.py --analysis         # 仅清理分析结果
-python clear_data.py --logs             # 仅清理日志
-python clear_data.py --status           # 查看存储使用情况
-python clear_data.py --help             # 显示帮助信息
+### 2. Create a virtual environment
+
+```bash
+python -m venv .venv
+```
+
+Activate it:
+
+- Windows PowerShell
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+- Linux or macOS
+
+```bash
+source .venv/bin/activate
+```
+
+### 3. Install the package
+
+```bash
+python -m pip install --upgrade pip
+pip install -e .
+```
+
+### 4. Configure tokens
+
+Copy the example environment file and fill in your own GitHub tokens:
+
+```bash
+cp .env.example .env
+```
+
+At minimum, set:
+
+```env
+GITHUB_TOKENS=token1,token2
+```
+
+## Running Collection
+
+Run the main collector:
+
+```bash
+python -m gha_cascade_analyzer.main
+```
+
+Optional preflight:
+
+```bash
+python -m gha_cascade_analyzer.preflight_main
+```
+
+## Running Analysis
+
+After collection, run:
+
+```bash
+python -m gha_cascade_analyzer.analysis_main
+```
+
+Typical outputs include:
+
+- workflow-level risk summaries
+- drift-event distributions
+- cascade dependency graph exports
+- blast-radius metrics
+- exposure-window summaries
+- figure-ready CSV and JSON files under `data/analysis/`
+
+## Repeated-Run Drift Experiments
+
+Some drift analyses require more than one collection round across time.
+
+Recommended workflow:
+
+1. Run `python -m gha_cascade_analyzer.main`
+2. Wait hours or days
+3. Run the collector again with the same output directory
+4. Run `python -m gha_cascade_analyzer.analysis_main`
+
+This allows the tool to compare mutable references across snapshots and reconstruct drift events and exposure windows.
+
+## Useful Paths
+
+- `scripts/linux/run_collection.sh`
+- `scripts/linux/run_analysis.sh`
+- `scripts/linux/run_analysis_and_figures.sh`
+- `scripts/plot_paper_figures.py`
+- `docs/section_iv_icse_draft.md`
+
+## Notes
+
+- The repository is code-first and does not ship the full collected dataset.
+- Private secrets and local environment files are intentionally excluded.
+- Some scripts assume a research workflow and may expect previously collected data under `data/`.
+
+## Additional Guides
+
+- Chinese guide: `README_zh.md`
+- Linux-oriented notes: `README_linux_zh.md`

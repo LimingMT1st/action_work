@@ -1,0 +1,5 @@
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+0 */6 * * * cd /opt/gha-cascade-analyzer && ./scripts/linux/run_collection.sh
+30 2 * * * cd /opt/gha-cascade-analyzer && ./scripts/linux/run_analysis.sh
