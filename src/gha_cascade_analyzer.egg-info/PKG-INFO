@@ -1,0 +1,167 @@
+Metadata-Version: 2.4
+Name: gha-cascade-analyzer
+Version: 0.1.0
+Summary: Consumer-first GitHub Actions cascade risk data collection pipeline
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: aiohttp>=3.9.0
+Requires-Dist: matplotlib>=3.8.0
+Requires-Dist: pydantic>=2.7.0
+Requires-Dist: python-dotenv>=1.0.1
+Requires-Dist: PyYAML>=6.0.1
+Dynamic: license-file
+
+# GHA Cascade Analyzer
+
+GHA Cascade Analyzer is a research-oriented toolkit for collecting and analyzing GitHub Actions workflow ecosystems from a supply-chain security perspective.
+
+It focuses on how trust propagates through reusable Actions and workflows, how mutable references drift over time, and how upstream changes can affect downstream repositories at scale.
+
+## What This Repository Contains
+
+- `src/gha_cascade_analyzer/`: the main collection and analysis package
+- `scripts/`: figure-generation and experiment helper scripts
+- `tests/`: regression tests for the research metrics and analysis modules
+- `docs/`: draft writing materials and section-level paper assets
+- `.env.example`: example runtime configuration
+
+This public repository intentionally excludes local runtime state such as collected datasets, checkpoints, logs, virtual environments, and private tokens.
+
+## Main Capabilities
+
+- Sample GitHub repositories that consume GitHub Actions workflows
+- Collect workflow files, workflow history, and Marketplace metadata
+- Track mutable references and reconstruct tag drift events over repeated runs
+- Build cascade dependency graphs for downstream trust analysis
+- Export structured CSV and JSON outputs for research reporting
+- Generate paper-ready figures for multiple research questions
+
+## Research Focus
+
+The current codebase supports analyses around:
+
+- Implicit dependency discovery in GitHub Actions workflows
+- Mutable-reference drift and trust instability
+- Privilege-bearing blast radius of reused Actions
+- Exposure windows between upstream drift and downstream updates
+- Cross-owner and layered trust amplification patterns
+
+## Requirements
+
+- Python `3.11+`
+- `git` available in `PATH`
+- One or more GitHub Personal Access Tokens for data collection
+
+## Quick Start
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/LimingMT1st/action_work.git
+cd action_work
+```
+
+### 2. Create a virtual environment
+
+```bash
+python -m venv .venv
+```
+
+Activate it:
+
+- Windows PowerShell
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+- Linux or macOS
+
+```bash
+source .venv/bin/activate
+```
+
+### 3. Install the package
+
+```bash
+python -m pip install --upgrade pip
+pip install -e .
+```
+
+### 4. Configure tokens
+
+Copy the example environment file and fill in your own GitHub tokens:
+
+```bash
+cp .env.example .env
+```
+
+At minimum, set:
+
+```env
+GITHUB_TOKENS=token1,token2
+```
+
+## Running Collection
+
+Run the main collector:
+
+```bash
+python -m gha_cascade_analyzer.main
+```
+
+Optional preflight:
+
+```bash
+python -m gha_cascade_analyzer.preflight_main
+```
+
+## Running Analysis
+
+After collection, run:
+
+```bash
+python -m gha_cascade_analyzer.analysis_main
+```
+
+Typical outputs include:
+
+- workflow-level risk summaries
+- drift-event distributions
+- cascade dependency graph exports
+- blast-radius metrics
+- exposure-window summaries
+- figure-ready CSV and JSON files under `data/analysis/`
+
+## Repeated-Run Drift Experiments
+
+Some drift analyses require more than one collection round across time.
+
+Recommended workflow:
+
+1. Run `python -m gha_cascade_analyzer.main`
+2. Wait hours or days
+3. Run the collector again with the same output directory
+4. Run `python -m gha_cascade_analyzer.analysis_main`
+
+This allows the tool to compare mutable references across snapshots and reconstruct drift events and exposure windows.
+
+## Useful Paths
+
+- `scripts/linux/run_collection.sh`
+- `scripts/linux/run_analysis.sh`
+- `scripts/linux/run_analysis_and_figures.sh`
+- `scripts/plot_paper_figures.py`
+- `docs/section_iv_icse_draft.md`
+
+## Notes
+
+- The repository is code-first and does not ship the full collected dataset.
+- Private secrets and local environment files are intentionally excluded.
+- Some scripts assume a research workflow and may expect previously collected data under `data/`.
+
+## Additional Guides
+
+- Chinese guide: `README_zh.md`
+- Linux-oriented notes: `README_linux_zh.md`
